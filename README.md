@@ -1,127 +1,63 @@
-HOI4 to AoH2 Map Converter
+# HOI4 to AoH2 Map Converter
 
-Convert Hearts of Iron IV province map to Age of History 2 map coordinate data \(Windows C\+\+ Win32 Tool\)
+**A Windows C\+\+ Win32 map conversion tool for HOI4 → AoH2 modding**
 
 [中文文档](https://github.com/Zriecka1727/H2AMap/blob/main/.github/README_zhCN.md)
 
-## Introduction
+## English
 
-A native Windows desktop tool written in C\+\+ Win32 API, used to convert HOI4 `provinces.bmp` \+ `definition.csv` into AoH2 readable `MAP_POINTS.txt` contour coordinate file\.This program automatically recognizes provinces, islands, enclaves, shared borders, coastlines and map outer edges, supports configurable point simplification to reduce output file size\.
+**HOI4 to AoH2 Map Converter** is a lightweight, standalone Windows desktop tool built in pure C\+\+ Win32 API\. It converts official *Hearts of Iron IV* province map data \(`provinces.bmp` \+ `definition.csv`\) into standard polygon contour coordinates for *Age of History 2* map modding\.
+
+The project is fully configured for**CLion \+ CMake**, no Visual Studio required\.
 
 ### Features
 
-* Multi\-language UI: Auto detect system language \| EN / 简体中文 / 繁體中文 / 日本語 / Русский
+- Auto\-detect multi\-language UI: EN / 简体中文 / 繁體中文 / 日本語 / Русский
 
-* Per\-Monitor DPI Aware V2, auto scale UI \& font for high\-DPI Windows displays
+- Full Per\-Monitor DPI V2 support for high\-resolution Windows displays
 
-* Full automatic raster scan: Identify all land/sea provinces, standalone islands \& enclaves
+- Auto scan land, sea, islands and enclaves from province bitmap
 
-* Topology\-based shared border extraction, classify: land border / coastline / map outer border / unregistered color boundary
+- Topology\-based border classification: land border, coastline, outer map edge, undefined border
 
-* Smart point simplification rules:
-  
-  * Map outer edges \& unregistered regions: no simplification \(fixed factor = 1\)
-  
-  * Coastline maximum simplify factor limited to 2 to avoid terrain distortion
-  
-  * Custom global simplify factor \(minimum = 1\)
+- Smart coordinate simplification protection to avoid terrain distortion
 
-* 4\-stage progress display with real\-time percentage, elapsed time statistics
+- Real\-time 4\-stage progress display with time statistics
 
-* Auto assign temporary virtual ID for undefined colors in `definition.csv` to prevent missing map blocks
+- Auto fill undefined color blocks to prevent map loss
 
-* Single\-thread background conversion, non\-blocking UI
+- Non\-blocking UI during conversion
 
-## Requirements
+### Build \(CLion\)
 
-### Input Files \(Place in same folder with EXE\)
+1. Open project root in CLion
 
-1. `definition.csv` — HOI4 official province definition file \(semicolon `;` separated\)
+2. CMake will automatically configure the project
 
-2. `provinces.bmp` — HOI4 province color bitmap image
+3. Switch to **Release** mode
 
-### Build Dependencies
+4. Build and get executable from `cmake-build-release/bin`
 
-* Windows SDK \(Win32 \+ Common Controls\)
+### Usage
 
-* Single\-header library: `stb_image.h` \(included in project\)
+1. Place `definition.csv` and `provinces.bmp` in the program folder
 
-* Link library: `Comctl32.lib`
+2. Set simplify factor \(1 = highest precision\)
 
-* Compiler: MSVC \(Visual Studio 2019/2022 recommended\)
+3. Start conversion
 
-## Build Guide
+4. Obtain final `MAP_POINTS.txt` for AoH2 mod
 
-1. Create an empty C\+\+ Windows Desktop Project in Visual Studio
+### Notes
 
-2. Set project configuration:
-   
-   * Character Set: Use Unicode Character Set
-   
-   * DPI Awareness: Per Monitor High DPI Aware V2
+- Only supports BMP bitmap input
 
-3. Add source file with provided code, put `stb_image.h` in source directory
+- CSV file must use semicolon `;` separator
 
-4. Linker → Input → Additional Dependencies: add `Comctl32.lib`
+- Only converts geometric map contour data
 
-5. Build as Release x64 / x86
+- High\-resolution maps require more memory and time
 
-## Usage
+---
 
-1. Put `definition.csv` and `provinces.bmp` in the same directory as compiled `.exe`
-
-2. Launch the converter
-
-3. Set **Simplify** value \(minimum 1, larger value = smaller output file\)
-
-4. Click `Start Convert`
-
-5. Conversion runs in 4 steps:
-   
-   1. Scan all provinces, islands and enclaves
-   
-   2. Extract shared topological borders
-   
-   3. Simplify contour coordinate points
-   
-   4. Assemble closed polygon loops for each province
-
-6. After finished, `MAP_POINTS.txt` will be generated in current folder
-
-7. Use this file directly in your Age of History 2 mod map
-
-### Simplify Parameter Rules
-
-* `1`: No simplification, highest precision, largest file size
-
-* `>1`: Keep one coordinate point every N points
-
-* Hard constraints:
-  
-  * Outer map border \& unregistered color regions: always factor = 1
-  
-  * Coastline border: maximum allowed factor = 2
-
-## Output Format: `MAP_POINTS.txt`
-
-Each province occupies exactly two lines:
-
-1. Line 1: Comma\-separated X coordinates of closed contour
-
-2. Line 2: Comma\-separated Y coordinates of closed contour
-
-Empty/invalid province outputs two lines of `0`\.Unregistered color blocks will be appended sequentially after original registered provinces\.
-
-## Limitations
-
-* Only supports BMP bitmap input
-
-* CSV must use semicolon `;` as separator \(HOI4 standard format\)
-
-* Only converts geometry contour data; no population, terrain, culture or province name conversion
-
-* Large high\-resolution maps require more RAM and longer conversion time
-
-## Author
-
-Author: FanillanusQQ: 3156785429
+**License:** MIT \| **Author:** Fanillanus
