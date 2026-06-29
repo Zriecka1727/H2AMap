@@ -2,7 +2,7 @@ HOI4 to AoH2 Map Converter
 
 Convert Hearts of Iron IV province map to Age of History 2 map coordinate data \(Windows C\+\+ Win32 Tool\)
 
-\[中文文档\]\(\#中文说明\)
+\[中文文档\]\(\https://github.com/Zriecka1727/H2AMap/blob/main/README_zhCN.md\)
 
 ## Introduction
 
